@@ -1,6 +1,6 @@
 # CIFAR-10.1
 This repository contains the release of the CIFAR-10.1 dataset, a new test set for CIFAR-10.
-We describe the creation of the dataset in the paper ["Do CIFAR-10 classifiers generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451).
+We describe the creation of the dataset in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451).
 
 There are two versions of the CIFAR-10.1 dataset:
 - `default` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
