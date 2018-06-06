@@ -9,7 +9,9 @@ There are two versions of the CIFAR-10.1 dataset:
 The `datasets` directory contains the dataset files:
 - The `default` files are `cifar10.1-data.npy` and `cifar10.1-labels.npy`.
 - The `v0` files are `cifar10.1-v0-data.npy` and `cifar10.1-v0-labels.npy`.
+
 The `notebooks` directory contains a short script to browse the CIFAR-10.1 dataset.
+
 The `code` directory contains a `utils` file to help load the dataset.
 
 To cite this dataset please use both references:
