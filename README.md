@@ -1,6 +1,7 @@
 # CIFAR-10.1
-This repository contains the release of the CIFAR-10.1 dataset, a new test set for CIFAR-10.
-We describe the creation of the dataset in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451).
+This repository contains the CIFAR-10.1 dataset, a new test set for CIFAR-10.
+We describe the creation of the dataset in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
+These images are a subset of the [TinyImages](http://horatio.cs.nyu.edu/mit/tiny/data/index.html) dataset. 
 
 There are two versions of the CIFAR-10.1 dataset:
 - `default` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
@@ -23,7 +24,7 @@ To cite this dataset please use both references:
   note = {\url{https://arxiv.org/abs/1806.00451}},
 }
 @article{torralba2008tinyimages, 
-  author = {A. Torralba and R. Fergus and W. T. Freeman}, 
+  author = {Antonio Torralba and Rob Fergus and William T. Freeman}, 
   journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence}, 
   title = {80 Million Tiny Images: A Large Data Set for Nonparametric Object and Scene Recognition}, 
   year = {2008}, 
