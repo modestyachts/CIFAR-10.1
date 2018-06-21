@@ -1,5 +1,6 @@
 import io
 import os
+import json
 
 import numpy as np
 import PIL.Image
@@ -41,3 +42,27 @@ def load_new_test_data(version='default'):
     elif version == 'v0':
         assert labels.shape[0] == 2021
     return imagedata, labels
+
+def load_distances_to_cifar10(
+        filename='../other_data/tinyimage_cifar10_distances_full.json'):
+    with open(filename, 'r') as f:
+        tmp = json.load(f)
+    assert len(tmp) == 372131
+    result = {}
+    for k, v in tmp.items():
+        result[int(k)] = v
+    return result
+
+def load_cifar10_by_keyword():
+    '''Returns a dictionary maping each keyword in CIFAR10 to a list of
+       TinyImage indices.'''
+    with open('../other_data/cifar10_keywords.json') as f:
+        cifar10_keywords = json.load(f)
+    cifar10_by_keyword = {}
+    for ii, keyword_entries in enumerate(cifar10_keywords):
+        for entry in keyword_entries:
+            cur_keyword = entry['nn_keyword']
+            if not cur_keyword in cifar10_by_keyword:
+                cifar10_by_keyword[cur_keyword] = []
+            cifar10_by_keyword[cur_keyword].append(ii)
+    return cifar10_by_keyword
