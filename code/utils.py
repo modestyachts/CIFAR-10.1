@@ -43,7 +43,7 @@ def load_new_test_data(version='default'):
         assert labels.shape[0] == 2021
     return imagedata, labels
 
-def load_distances_to_cifar10(
+def load_v4_distances_to_cifar10(
         filename='../other_data/tinyimage_cifar10_distances_full.json'):
     with open(filename, 'r') as f:
         tmp = json.load(f)
@@ -52,6 +52,17 @@ def load_distances_to_cifar10(
     for k, v in tmp.items():
         result[int(k)] = v
     return result
+
+def load_v6_distances_to_cifar10(
+    filename='../other_data/tinyimage_large_dst_images_v6.1.json'):
+    with open(filename, 'r') as f:
+        tmp = json.load(f)
+    result = {}
+    for _, v in tmp.items():
+        for obj in v:
+            result[int(obj["tinyimage_index"])] = obj["cifar10_nn_dst"]
+    return result
+
 
 def load_cifar10_by_keyword():
     '''Returns a dictionary maping each keyword in CIFAR10 to a list of
