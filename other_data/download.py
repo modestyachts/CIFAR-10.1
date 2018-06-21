@@ -15,6 +15,10 @@ s3 = boto3.resource('s3')
 BUCKET_NAME = 'cifar-10-1'
 
 ALL_FILENAMES = [
+  'tinyimage_good_indices.json',
+  'tinyimage_large_dst_images_v6.1.json',
+  'tinyimage_large_dst_image_data_v6.1.pickle',
+  'tinyimage_good_indices_subselected_v6.json',
   'tinyimage_large_dst_images_v4.json',
   'tinyimage_large_dst_image_data_v4.pickle',
   'tinyimage_good_indices_subselected_v4.json',
