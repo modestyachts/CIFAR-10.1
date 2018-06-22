@@ -44,8 +44,10 @@ def load_new_test_data(version='default'):
     return imagedata, labels
 
 def load_v4_distances_to_cifar10(
-        filename='../other_data/tinyimage_cifar10_distances_full.json'):
-    with open(filename, 'r') as f:
+        distances_filename='tinyimage_cifar10_distances_full.json'):
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    distances_filepath = os.path.join(other_data_path, distances_filename)
+    with open(distances_filepath, 'r') as f:
         tmp = json.load(f)
     assert len(tmp) == 372131
     result = {}
@@ -54,8 +56,10 @@ def load_v4_distances_to_cifar10(
     return result
 
 def load_v6_distances_to_cifar10(
-    filename='../other_data/tinyimage_large_dst_images_v6.1.json'):
-    with open(filename, 'r') as f:
+    distances_filename='tinyimage_large_dst_images_v6.1.json'):
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    distances_filepath = os.path.join(other_data_path, distances_filename)
+    with open(distances_filepath, 'r') as f:
         tmp = json.load(f)
     result = {}
     for _, v in tmp.items():
@@ -67,7 +71,9 @@ def load_v6_distances_to_cifar10(
 def load_cifar10_by_keyword():
     '''Returns a dictionary maping each keyword in CIFAR10 to a list of
        TinyImage indices.'''
-    with open('../other_data/cifar10_keywords.json') as f:
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    keywords_filepath = os.path.join(other_data_path, 'cifar10_keywords.json')
+    with open(keywords_filepath) as f:
         cifar10_keywords = json.load(f)
     cifar10_by_keyword = {}
     for ii, keyword_entries in enumerate(cifar10_keywords):
