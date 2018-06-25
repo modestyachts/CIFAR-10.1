@@ -3,7 +3,11 @@ import os
 import json
 
 import numpy as np
+import pandas as pd
+import scipy.stats
+import pathlib
 import PIL.Image
+import cifar10
 
 cifar10_label_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
@@ -21,12 +25,16 @@ def load_new_test_data(version='default'):
     filename = 'cifar10.1'
     if version == 'default':
         pass
-    elif version == 'v0':
-        filename += '-v0'
+    elif version == 'top25keywords':
+        filename += '_top25keywords'
+    elif version == '6':
+        pass
+    elif version == '4':
+        filename += '_top25keywords'
     else:
         raise ValueError('Unknown dataset version "{}".'.format(version))
-    label_filename = filename + '-labels.npy'
-    imagedata_filename = filename + '-data.npy'
+    label_filename = filename + '_labels.npy'
+    imagedata_filename = filename + '_data.npy'
     label_filepath = os.path.join(data_path, label_filename)
     imagedata_filepath = os.path.join(data_path, imagedata_filename)
     labels = np.load(label_filepath)
@@ -44,8 +52,10 @@ def load_new_test_data(version='default'):
     return imagedata, labels
 
 def load_v4_distances_to_cifar10(
-        filename='../other_data/tinyimage_cifar10_distances_full.json'):
-    with open(filename, 'r') as f:
+        distances_filename='tinyimage_cifar10_distances_full.json'):
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    distances_filepath = os.path.join(other_data_path, distances_filename)
+    with open(distances_filepath, 'r') as f:
         tmp = json.load(f)
     assert len(tmp) == 372131
     result = {}
@@ -54,8 +64,10 @@ def load_v4_distances_to_cifar10(
     return result
 
 def load_v6_distances_to_cifar10(
-    filename='../other_data/tinyimage_large_dst_images_v6.1.json'):
-    with open(filename, 'r') as f:
+    distances_filename='tinyimage_large_dst_images_v6.1.json'):
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    distances_filepath = os.path.join(other_data_path, distances_filename)
+    with open(distances_filepath, 'r') as f:
         tmp = json.load(f)
     result = {}
     for _, v in tmp.items():
@@ -67,7 +79,9 @@ def load_v6_distances_to_cifar10(
 def load_cifar10_by_keyword():
     '''Returns a dictionary maping each keyword in CIFAR10 to a list of
        TinyImage indices.'''
-    with open('../other_data/cifar10_keywords.json') as f:
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    keywords_filepath = os.path.join(other_data_path, 'cifar10_keywords.json')
+    with open(keywords_filepath) as f:
         cifar10_keywords = json.load(f)
     cifar10_by_keyword = {}
     for ii, keyword_entries in enumerate(cifar10_keywords):
@@ -77,3 +91,84 @@ def load_cifar10_by_keyword():
                 cifar10_by_keyword[cur_keyword] = []
             cifar10_by_keyword[cur_keyword].append(ii)
     return cifar10_by_keyword
+
+def compute_accuracy(pred, labels):
+    return np.sum(pred == labels) / float(len(labels))
+
+def clopper_pearson(k,n,alpha=0.05):
+    """
+    http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+    alpha confidence intervals for a binomial distribution of k expected successes on n trials
+    Clopper Pearson intervals are a conservative estimate.
+    """
+    lo = scipy.stats.beta.ppf(alpha/2, k, n-k+1)
+    hi = scipy.stats.beta.ppf(1 - alpha/2, k+1, n-k)
+    return lo, hi
+
+def get_model_names():
+    model_names = []
+    suffix = '_predictions.json'
+    original_predictions_path = os.path.join(os.path.dirname(__file__), 
+                                        '../model_predictions/original_predictions')
+    for p in pathlib.Path(original_predictions_path).glob('*.json'):
+        assert str(p).endswith(suffix)
+        cur_name = str(p.name)[:-(len(suffix))]
+        model_names.append(cur_name)
+    model_names = sorted(model_names)
+    return model_names
+
+def get_original_predictions():
+    # Load original predictions
+    original_predictions = {}
+    suffix = '_predictions.json'
+    original_predictions_path = os.path.join(os.path.dirname(__file__), 
+                                       '../model_predictions/original_predictions')
+    for p in pathlib.Path(original_predictions_path).glob('*.json'):
+        assert str(p).endswith(suffix)
+        cur_name = str(p.name)[:-(len(suffix))]
+        with open(p, 'r') as f:
+            original_predictions[cur_name] = np.array(json.load(f))
+    return original_predictions
+
+def get_new_predictions(version):
+    new_predictions = {}
+    suffix = '_predictions.json'
+    new_predictions_path = os.path.join(os.path.dirname(__file__), 
+                                        '../model_predictions/v{}_predictions'.format(version))
+    for p in pathlib.Path(new_predictions_path).glob('*.json'):
+        assert str(p).endswith(suffix)
+        cur_name = str(p.name)[:-(len(suffix))]
+        with open(p, 'r') as f:
+            new_predictions[cur_name] = np.array(json.load(f))
+    return new_predictions 
+
+def get_prediction_dataframe(version):
+    '''Returns a pandas dataframe containing model accuracies, error, and gap.'''
+    
+    # Get the original and new true labels
+    cifar_filepath = os.path.join(os.path.dirname(__file__), '../other_data/cifar10')
+    cifar = cifar10.CIFAR10Data(cifar_filepath)
+    original_test_labels = cifar.eval_labels
+    _, new_true_labels = load_new_test_data(version)
+    
+    # Get the model predictions
+    model_names = get_model_names()
+    new_predictions = get_new_predictions(version)
+    original_predictions = get_original_predictions()
+
+    pd_data = {}
+    for m in model_names:
+        cur_dict = {}
+        pd_data[m] = cur_dict
+        cur_dict['New Acc.'] = 100 * compute_accuracy(new_predictions[m], new_true_labels)
+        cur_dict['Original Acc.'] = 100 * compute_accuracy(original_predictions[m], original_test_labels)
+        cur_dict['Gap'] = cur_dict['Original Acc.'] - cur_dict['New Acc.']
+        cur_dict['Original Err.'] = 100 - cur_dict['Original Acc.']
+        cur_dict['New Err.'] = 100 - cur_dict['New Acc.']
+        cur_dict['Error Ratio'] = cur_dict['New Err.'] / cur_dict['Original Err.']
+        cur_dict['New CI'] = clopper_pearson(np.sum(new_predictions[m] == new_true_labels), len(new_true_labels))
+        cur_dict['Original CI'] = clopper_pearson(np.sum(original_predictions[m] == original_test_labels), 10000)
+
+    df= pd.DataFrame(pd_data).transpose()[['Original Acc.', 'New Acc.', 'Gap', 
+                                        'Original Err.', 'New Err.', 'Error Ratio']]
+    return df
