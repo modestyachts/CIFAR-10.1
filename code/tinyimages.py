@@ -108,7 +108,8 @@ class TinyImages(object):
             if num_images == 1:
                 result = result.reshape(32, 32, 3, order='F')
             else:
-                result = result.reshape(num_images, 32, 32, 3, order='F')
+                result = result.reshape(32, 32, 3, num_images, order='F')
+                result = result.transpose([3, 0, 1, 2])
         return result
 
     def close(self):
