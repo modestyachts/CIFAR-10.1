@@ -23,6 +23,7 @@ ALL_FILENAMES = [
   'tinyimage_large_dst_image_data_v4.pickle',
   'tinyimage_good_indices_subselected_v4.json',
   'cifar10_keywords.json',
+  'cifar10_keywords_unique.json',
   'tinyimage_cifar10_distances_full.json',
 ]
 
