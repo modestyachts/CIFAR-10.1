@@ -70,7 +70,7 @@ def process_keywords(keyword):
     final_res = {}
     final_res['tinyimage_keyword'] = keyword
     final_res['subset_indices'] = res
-    with open('keyword_subsets/tinyimage_subset_{}.json'.format(keyword), 'w') as f:
+    with open('../other_data/keyword_subsets/tinyimage_subset_{}.json'.format(keyword), 'w') as f:
         json.dump(final_res, f, indent=2)
 
 

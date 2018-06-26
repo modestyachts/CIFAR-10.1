@@ -12,7 +12,7 @@ ti = tinyimages.TinyImages('/scratch/tinyimages')
 new_dict = {}
 data_dict = {}
 
-with os.scandir('keyword_subsets/') as it:
+with os.scandir('../other_data/keyword_subsets/') as it:
     for entry in it:
         if entry.name.endswith('json') and entry.is_file():
             with open(entry.path, 'r') as f:
@@ -43,8 +43,8 @@ for keyword_name in new_dict:
         all_ti_indices.append(rec['tinyimage_index'])
 assert set(all_ti_indices) == set(data_dict.keys())
 
-with open('tinyimage_subset_indices.json', 'w') as f:
+with open('../other_data/tinyimage_subset_indices.json', 'w') as f:
     json.dump(new_dict, f, indent=2)
 
-with open('tinyimage_subset_data.pickle', 'wb') as f:
+with open('../other_data/tinyimage_subset_data.pickle', 'wb') as f:
     pickle.dump(data_dict, f)
