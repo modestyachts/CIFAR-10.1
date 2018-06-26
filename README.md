@@ -3,17 +3,63 @@ This repository contains the CIFAR-10.1 dataset, a new test set for CIFAR-10.
 We describe the creation of the dataset in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
 These images are a subset of the [TinyImages](http://horatio.cs.nyu.edu/mit/tiny/data/index.html) dataset. 
 
+# Dataset Release
+
 There are two versions of the CIFAR-10.1 dataset:
 - `default` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
-- `v0` is the first version of our dataset. The numbers reported in the main section of our paper use the `v0` dataset.
+- `top25keywords` is the first version of our dataset. The numbers reported in the main section of our paper use the `top25keywords` dataset.
 
 The `datasets` directory contains the dataset files:
-- The `default` files are `cifar10.1-data.npy` and `cifar10.1-labels.npy`.
-- The `v0` files are `cifar10.1-v0-data.npy` and `cifar10.1-v0-labels.npy`.
+- The `default` files are `cifar10.1_data.npy` and `cifar10.1_labels.npy`.
+- The `top25keywords` files are `cifar10.1_top25keywords_data.npy` and `cifar10.1_top25keywords_labels.npy`.
 
-The `notebooks` directory contains a short script to browse the CIFAR-10.1 dataset.
+The `notebooks` directory contains a short script `inspect_dataset_simple.ipynb` to browse the CIFAR-10.1 dataset.
 
 The `code` directory contains a `utils` file to help load the dataset.
+
+# Dataset Creation Pipeline
+
+WARNING: This is currently work in progress, some parts may be incomplete.
+
+
+We include code to make it possible for others to replicate the creation of the new dataset. 
+The dataset creation process has several stages:
+
+1. **TinyImages**
+2. **Keywords for CIFAR-10**
+3. **Unique Keywords**
+
+4. **Keyword counts for the new dataset.**  
+* `keywords_v{}.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+
+
+5. **Labeling new images.**
+
+6. **Double checking labeled images.** 
+* `labeling_ui_subselect.ipynb` allows a second person to confirm the initial labelings and subselect a pool of labeled TinyImage indices.
+
+7. **Sampling new images from the pool of labeled images.** 
+* `sample_subselected_indices_v{}.ipynb` samples the pool of labeled images and creates the new dataset
+
+8. **Inspect the new dataset.**
+* `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
+
+9. **Inpsect model predictions.**
+* `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a datafreame including the original and new accuracy for each model. 
+
+
+# Other Data
+
+Metadata needed to create the new datasets can be downloaded from an s3 bucket using the `other_data/download.py` script.
+The script requires Boto 3, which can be installed via pip: `pip install boto3`.
+
+The following metadata files are used in the creation of the new datasets:
+
+*  `cifar10_keywords_unique_v{}.json` contains the TinyImage index, asociated keyword, and CIFAR-10 label for every image in CIFAR-10.
+*  `keyword_counts_v{}.json` contains the image counts for each keyword.
+
+
+# Citing the Dataset
 
 To cite this dataset please use both references:
 ```
