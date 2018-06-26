@@ -14,13 +14,24 @@ num_processes = int(sys.argv[2])
 
 keywords = []
 with open(keywords_filename, 'r') as f:
-    for line in f:
-        parts = [p.strip() for p in line.split(',')]
-        keywords.extend(parts)
+    if keywords_filename.endswith('.json'):
+        keywords = json.load(f)
+    elif keywords_filename.endswith('.txt'):
+        for line in f:
+            parts = [p.strip() for p in line.split(',')]
+            keywords.extend(parts)
+    else:
+        print('Unknown filename ending.')
+        sys.exit(0)
 
 unique_keywords = list(set(keywords))
 print('Read {} keywords ({} unique):'.format(len(keywords), len(unique_keywords)))
 print(unique_keywords)
+
+if len(unique_keywords) > 1000:
+    print('Warning: more than 1,000 keywords. This will lead to a large subset.')
+    print('Remove this check in the code to proceed.')
+    sys.exit(0)
 
 @numba.jit(nopython=True)
 def compute_dsts(imgs, other):
@@ -40,7 +51,7 @@ def process_keywords(keyword):
     cur_index_set = set()
     for ii in range_obj:
         assert idxs[ii] not in cur_index_set
-        cur_index_set.insert(idxs[ii])
+        cur_index_set.add(idxs[ii])
 
         cur_img = ti.slice_to_numpy(idxs[ii]).astype(np.float32).reshape(-1)
         assert cur_img.shape == (32 * 32 * 3,)
@@ -58,8 +69,8 @@ def process_keywords(keyword):
     
     final_res = {}
     final_res['tinyimage_keyword'] = keyword
-    final_res['large_dst_images'] = res
-    with open('check_keyword_output/tinyimage_subset_{}.json'.format(keyword), 'w') as f:
+    final_res['subset_indices'] = res
+    with open('keyword_subsets/tinyimage_subset_{}.json'.format(keyword), 'w') as f:
         json.dump(final_res, f, indent=2)
 
 
