@@ -44,7 +44,7 @@ The dataset creation process has several stages:
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
 
 9. **Inspect model predictions.**
-* `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a datafreame including the original and new accuracy for each model. 
+* `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
 
 
 # Other Data
