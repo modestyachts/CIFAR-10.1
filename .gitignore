@@ -2,3 +2,6 @@ __pycache__/
 .ipynb_checkpoints
 *.swp
 other_data/cifar10
+other_data/cifar-10-python.tar.gz
+other_data/cifar10_keywords.json
+other_data/cifar10_keywords_unique.json
