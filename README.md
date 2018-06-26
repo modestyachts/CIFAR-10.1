@@ -32,7 +32,6 @@ The dataset creation process has several stages:
 4. **Keyword counts for the new dataset.**  
 * `keywords_v{}.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
 
-
 5. **Labeling new images.**
 
 6. **Double checking labeled images.** 
@@ -44,7 +43,7 @@ The dataset creation process has several stages:
 8. **Inspect the new dataset.**
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
 
-9. **Inpsect model predictions.**
+9. **Inspect model predictions.**
 * `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a datafreame including the original and new accuracy for each model. 
 
 
