@@ -30,7 +30,7 @@ The dataset creation process has several stages:
 3. **Unique Keywords**
 
 4. **Keyword counts for the new dataset.**  
-* `keywords_v{}.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+* `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
 
 5. **Labeling new images.**
 
@@ -38,7 +38,8 @@ The dataset creation process has several stages:
 * `labeling_ui_subselect.ipynb` allows a second person to confirm the initial labelings and subselect a pool of labeled TinyImage indices.
 
 7. **Sampling new images from the pool of labeled images.** 
-* `sample_subselected_indices_v{}.ipynb` samples the pool of labeled images and creates the new dataset
+* `sample_subselected_indices_v4.ipynb` samples the pool of labeled images and creates the new dataset for v4
+* `sample_subselected_indices.ipynb` samples the pool of labeled images and creates the new dataset for v6 or v7
 
 8. **Inspect the new dataset.**
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
