@@ -6,12 +6,12 @@ These images are a subset of the [TinyImages](http://horatio.cs.nyu.edu/mit/tiny
 # Dataset Release
 
 There are two versions of the CIFAR-10.1 dataset:
-- `default` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
-- `top25keywords` is the first version of our dataset. The numbers reported in the main section of our paper use the `top25keywords` dataset.
+- `v6` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
+- `v4` is the first version of our dataset. The numbers reported in the main section of our paper use the `v4` dataset.
 
 The `datasets` directory contains the dataset files:
-- The `default` files are `cifar10.1_data.npy` and `cifar10.1_labels.npy`.
-- The `top25keywords` files are `cifar10.1_top25keywords_data.npy` and `cifar10.1_top25keywords_labels.npy`.
+- The `v4` files are `cifar10.1_v4_data.npy` and `cifar10.1_v4_labels.npy`.
+- The `v6` files are `cifar10.1_v6_data.npy` and `cifar10.1_v6_labels.npy`.
 
 The `notebooks` directory contains a short script `inspect_dataset_simple.ipynb` to browse the CIFAR-10.1 dataset.
 

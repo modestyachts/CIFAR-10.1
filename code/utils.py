@@ -23,14 +23,8 @@ def np_to_png(a, fmt='png', scale=1):
 def load_new_test_data(version='default'):
     data_path = os.path.join(os.path.dirname(__file__), '../datasets/')
     filename = 'cifar10.1'
-    if version == 'default':
-        pass
-    elif version == 'top25keywords':
-        filename += '_top25keywords'
-    elif version == '6':
-        pass
-    elif version == '4':
-        filename += '_top25keywords'
+    if version in ['v4', 'v6']:
+        filename += '_' + version
     else:
         raise ValueError('Unknown dataset version "{}".'.format(version))
     label_filename = filename + '_labels.npy'
@@ -45,9 +39,9 @@ def load_new_test_data(version='default'):
     assert imagedata.shape[1] == 32
     assert imagedata.shape[2] == 32
     assert imagedata.shape[3] == 3
-    if version == 'default':
+    if version == 'v6':
         assert labels.shape[0] == 2000
-    elif version == 'v0':
+    elif version == 'v4':
         assert labels.shape[0] == 2021
     return imagedata, labels
 
@@ -87,6 +81,29 @@ def load_cifar10_by_keyword(unique_keywords=True, version_string=''):
             if not cur_keyword in cifar10_by_keyword:
                 cifar10_by_keyword[cur_keyword] = []
             cifar10_by_keyword[cur_keyword].append(ii)
+    return cifar10_by_keyword
+
+def load_cifar10_by_label_and_keyword(filename):
+    '''Returns a dictionary maping each CIFAR-10 label to an inner dictionary
+       relating keyword to a list of TinyImage indices.'''
+    
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    cifar = cifar10.CIFAR10Data(os.path.join(other_data_path, 'cifar10'))
+    
+    keywords_filepath = os.path.join(other_data_path, filename)
+    with open(keywords_filepath) as f:
+        cifar10_keywords = json.load(f)
+    
+    cifar10_by_keyword = {}
+    for label in cifar10_label_names:
+        cifar10_by_keyword[label] = {}
+        
+    for ii, keyword_entry in enumerate(cifar10_keywords):
+        cur_keyword = keyword_entry['nn_keyword']
+        cur_label = cifar10_label_names[cifar.all_labels[ii]]
+        if not cur_keyword in cifar10_by_keyword[cur_label]:
+            cifar10_by_keyword[cur_label][cur_keyword] = []
+        cifar10_by_keyword[cur_label][cur_keyword].append(ii)
     return cifar10_by_keyword
 
 def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_string=''):
