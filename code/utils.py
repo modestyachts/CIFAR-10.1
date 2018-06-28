@@ -83,29 +83,6 @@ def load_cifar10_by_keyword(unique_keywords=True, version_string=''):
             cifar10_by_keyword[cur_keyword].append(ii)
     return cifar10_by_keyword
 
-def load_cifar10_by_label_and_keyword(filename):
-    '''Returns a dictionary maping each CIFAR-10 label to an inner dictionary
-       relating keyword to a list of TinyImage indices.'''
-    
-    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
-    cifar = cifar10.CIFAR10Data(os.path.join(other_data_path, 'cifar10'))
-    
-    keywords_filepath = os.path.join(other_data_path, filename)
-    with open(keywords_filepath) as f:
-        cifar10_keywords = json.load(f)
-    
-    cifar10_by_keyword = {}
-    for label in cifar10_label_names:
-        cifar10_by_keyword[label] = {}
-        
-    for ii, keyword_entry in enumerate(cifar10_keywords):
-        cur_keyword = keyword_entry['nn_keyword']
-        cur_label = cifar10_label_names[cifar.all_labels[ii]]
-        if not cur_keyword in cifar10_by_keyword[cur_label]:
-            cifar10_by_keyword[cur_label][cur_keyword] = []
-        cifar10_by_keyword[cur_label][cur_keyword].append(ii)
-    return cifar10_by_keyword
-
 def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_string=''):
     other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
     filename = 'cifar10_keywords'
