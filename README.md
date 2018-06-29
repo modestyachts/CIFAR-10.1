@@ -6,12 +6,12 @@ These images are a subset of the [TinyImages](http://horatio.cs.nyu.edu/mit/tiny
 # Dataset Release
 
 There are two versions of the CIFAR-10.1 dataset:
-- `default` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
-- `top25keywords` is the first version of our dataset. The numbers reported in the main section of our paper use the `top25keywords` dataset.
+- `v6` is the recommended dataset for future experiments and corresponds to the results in Appendix D of our paper.
+- `v4` is the first version of our dataset. The numbers reported in the main section of our paper use the `v4` dataset.
 
 The `datasets` directory contains the dataset files:
-- The `default` files are `cifar10.1_data.npy` and `cifar10.1_labels.npy`.
-- The `top25keywords` files are `cifar10.1_top25keywords_data.npy` and `cifar10.1_top25keywords_labels.npy`.
+- The `v4` files are `cifar10.1_v4_data.npy` and `cifar10.1_v4_labels.npy`.
+- The `v6` files are `cifar10.1_v6_data.npy` and `cifar10.1_v6_labels.npy`.
 
 The `notebooks` directory contains a short script `inspect_dataset_simple.ipynb` to browse the CIFAR-10.1 dataset.
 
@@ -30,7 +30,7 @@ The dataset creation process has several stages:
 3. **Unique Keywords**
 
 4. **Keyword counts for the new dataset.**  
-* `keywords_v{}.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+* `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
 
 5. **Labeling new images.**
 
@@ -38,7 +38,8 @@ The dataset creation process has several stages:
 * `labeling_ui_subselect.ipynb` allows a second person to confirm the initial labelings and subselect a pool of labeled TinyImage indices.
 
 7. **Sampling new images from the pool of labeled images.** 
-* `sample_subselected_indices_v{}.ipynb` samples the pool of labeled images and creates the new dataset
+* `sample_subselected_indices_v4.ipynb` samples the pool of labeled images and creates the new dataset for v4
+* `sample_subselected_indices.ipynb` samples the pool of labeled images and creates the new dataset for v6 or v7
 
 8. **Inspect the new dataset.**
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
@@ -56,6 +57,13 @@ The following metadata files are used in the creation of the new datasets:
 
 *  `cifar10_keywords_unique_v{}.json` contains the TinyImage index, asociated keyword, and CIFAR-10 label for every image in CIFAR-10.
 *  `keyword_counts_v{}.json` contains the image counts for each keyword.
+
+
+# License
+
+Unless noted otherwise in individual files, the code in this repository is released under the MIT license (see the `LICENSE` file).
+The `LICENSE` file does *not* apply to the actual image and label data in the `datasets` folder.
+This image data is part of the Tiny Images dataset and can be used the same way as the Tiny Images dataset.
 
 
 # Citing the Dataset

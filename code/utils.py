@@ -24,14 +24,8 @@ def np_to_png(a, fmt='png', scale=1):
 def load_new_test_data(version='default'):
     data_path = os.path.join(os.path.dirname(__file__), '../datasets/')
     filename = 'cifar10.1'
-    if version == 'default':
-        pass
-    elif version == 'top25keywords':
-        filename += '_top25keywords'
-    elif version == '6':
-        pass
-    elif version == '4':
-        filename += '_top25keywords'
+    if version in ['v4', 'v6']:
+        filename += '_' + version
     else:
         raise ValueError('Unknown dataset version "{}".'.format(version))
     label_filename = filename + '_labels.npy'
@@ -46,9 +40,9 @@ def load_new_test_data(version='default'):
     assert imagedata.shape[1] == 32
     assert imagedata.shape[2] == 32
     assert imagedata.shape[3] == 3
-    if version == 'default':
+    if version == 'v6':
         assert labels.shape[0] == 2000
-    elif version == 'v0':
+    elif version == 'v4':
         assert labels.shape[0] == 2021
     return imagedata, labels
 
@@ -64,7 +58,7 @@ def load_v4_distances_to_cifar10(
         result[int(k)] = v
     return result
 
-def load_v6_distances_to_cifar10(
+def load_distances_to_cifar10(
     distances_filename='tinyimage_large_dst_images_v6.1.json'):
     other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
     distances_filepath = os.path.join(other_data_path, distances_filename)
@@ -119,7 +113,6 @@ def load_cifar10_by_keyword(unique_keywords=True, version_string=''):
             cifar10_by_keyword[cur_keyword].append(ii)
     return cifar10_by_keyword
 
-
 def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_string=''):
     other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
     filename = 'cifar10_keywords'
@@ -141,7 +134,6 @@ def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_
         result = cifar10_keywords
     assert len(result) == 60000
     return result
-
 
 def compute_accuracy(pred, labels):
     return np.sum(pred == labels) / float(len(labels))

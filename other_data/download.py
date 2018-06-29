@@ -30,6 +30,7 @@ ALL_FILENAMES = [
   'cifar10_keywords.json',
   'cifar10_keywords_unique.json',
   'tinyimage_cifar10_distances_full.json',
+  'tinyimage_good_indices_subselected_v7.json',
 ]
 
 def download_file(key, force_download):
