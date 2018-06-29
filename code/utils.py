@@ -1,6 +1,7 @@
 import io
-import os
 import json
+import os
+import pickle
 
 import numpy as np
 import pandas as pd
@@ -70,6 +71,35 @@ def load_distances_to_cifar10(
     return result
 
 
+def load_tinyimage_subset(version_string=''):
+    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    image_data_filename = 'tinyimage_subset_data'
+    if version_string != '':
+        image_data_filename += '_' + version_string
+    image_data_filename += '.pickle'
+    image_data_filepath = os.path.abspath(os.path.join(other_data_path, image_data_filename))
+    indices_filename = 'tinyimage_subset_indices'
+    if version_string != '':
+        indices_filename += '_' + version_string
+    indices_filename += '.json'
+    indices_filepath = os.path.abspath(os.path.join(other_data_path, indices_filename))
+    print('Loading indices from file {}'.format(indices_filepath))
+    assert pathlib.Path(indices_filepath).is_file()
+    print('Loading image data from file {}'.format(image_data_filepath))
+    assert pathlib.Path(image_data_filepath).is_file()
+    with open(indices_filepath, 'r') as f:
+        indices = json.load(f)
+    with open(image_data_filepath, 'rb') as f:
+        image_data = pickle.load(f)
+    num_entries = 0
+    for kw, kw_indices in indices.items():
+        for entry in kw_indices:
+            assert entry['tinyimage_index'] in image_data
+            num_entries += 1
+    assert num_entries == len(image_data)
+    return indices, image_data
+
+
 def load_cifar10_by_keyword(unique_keywords=True, version_string=''):
     cifar10_keywords = load_cifar10_keywords(unique_keywords=unique_keywords,
                                              lists_for_unique=True,
@@ -88,13 +118,13 @@ def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_
     filename = 'cifar10_keywords'
     if unique_keywords:
         filename += '_unique'
-    if version_string:
+    if version_string != '':
         filename += '_' + version_string
     filename += '.json'
     keywords_filepath = os.path.abspath(os.path.join(other_data_path, filename))
     print('Loading keywords from file {}'.format(keywords_filepath))
     assert pathlib.Path(keywords_filepath).is_file()
-    with open(keywords_filepath) as f:
+    with open(keywords_filepath, 'r') as f:
         cifar10_keywords = json.load(f)
     if unique_keywords and lists_for_unique:
         result = []
@@ -108,6 +138,7 @@ def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_
 def compute_accuracy(pred, labels):
     return np.sum(pred == labels) / float(len(labels))
 
+
 def clopper_pearson(k,n,alpha=0.05):
     """
     http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
@@ -117,6 +148,7 @@ def clopper_pearson(k,n,alpha=0.05):
     lo = scipy.stats.beta.ppf(alpha/2, k, n-k+1)
     hi = scipy.stats.beta.ppf(1 - alpha/2, k+1, n-k)
     return lo, hi
+
 
 def get_model_names():
     model_names = []
@@ -129,6 +161,7 @@ def get_model_names():
         model_names.append(cur_name)
     model_names = sorted(model_names)
     return model_names
+
 
 def get_original_predictions():
     # Load original predictions
@@ -143,6 +176,7 @@ def get_original_predictions():
             original_predictions[cur_name] = np.array(json.load(f))
     return original_predictions
 
+
 def get_new_predictions(version):
     new_predictions = {}
     suffix = '_predictions.json'
@@ -154,6 +188,7 @@ def get_new_predictions(version):
         with open(p, 'r') as f:
             new_predictions[cur_name] = np.array(json.load(f))
     return new_predictions 
+
 
 def get_prediction_dataframe(version):
     '''Returns a pandas dataframe containing model accuracies, error, and gap.'''
