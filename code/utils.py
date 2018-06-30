@@ -12,6 +12,7 @@ import cifar10
 
 cifar10_label_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
+
 def np_to_png(a, fmt='png', scale=1):
     a = np.uint8(a)
     f = io.BytesIO()
@@ -46,28 +47,27 @@ def load_new_test_data(version='default'):
         assert labels.shape[0] == 2021
     return imagedata, labels
 
-def load_v4_distances_to_cifar10(
-        distances_filename='tinyimage_cifar10_distances_full.json'):
-    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
-    distances_filepath = os.path.join(other_data_path, distances_filename)
-    with open(distances_filepath, 'r') as f:
+
+def load_distances_to_cifar10(version_string=''):
+    data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
+    filename = 'tinyimage_cifar10_distances'
+    if version_string != '':
+        filename += '_' + version_string
+    filename += '.json'
+    filepath = os.path.abspath(os.path.join(data_path, filename))
+    print('Loading distances from file {}'.format(filepath))
+    assert pathlib.Path(filepath).is_file()
+    with open(filepath, 'r') as f:
         tmp = json.load(f)
-    assert len(tmp) == 372131
+    if version_string == 'v4':
+        assert len(tmp) == 372131
+    elif version_string == 'v6':
+        assert len(tmp) == 1646248
+    elif version_string == 'v7':
+        assert len(tmp) == 589711
     result = {}
     for k, v in tmp.items():
         result[int(k)] = v
-    return result
-
-def load_distances_to_cifar10(
-    distances_filename='tinyimage_large_dst_images_v6.1.json'):
-    other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
-    distances_filepath = os.path.join(other_data_path, distances_filename)
-    with open(distances_filepath, 'r') as f:
-        tmp = json.load(f)
-    result = {}
-    for _, v in tmp.items():
-        for obj in v:
-            result[int(obj["tinyimage_index"])] = obj["cifar10_nn_dst"]
     return result
 
 
@@ -113,6 +113,7 @@ def load_cifar10_by_keyword(unique_keywords=True, version_string=''):
             cifar10_by_keyword[cur_keyword].append(ii)
     return cifar10_by_keyword
 
+
 def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_string=''):
     other_data_path = os.path.join(os.path.dirname(__file__), '../other_data/')
     filename = 'cifar10_keywords'
@@ -134,6 +135,7 @@ def load_cifar10_keywords(unique_keywords=True, lists_for_unique=False, version_
         result = cifar10_keywords
     assert len(result) == 60000
     return result
+
 
 def compute_accuracy(pred, labels):
     return np.sum(pred == labels) / float(len(labels))
