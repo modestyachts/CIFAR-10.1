@@ -241,3 +241,20 @@ def get_prediction_dataframe(version):
     df= pd.DataFrame(pd_data).transpose()[['Original Acc.', 'New Acc.', 'Gap', 
                                         'Original Err.', 'New Err.', 'Error Ratio']]
     return df
+
+
+def compute_l2_distances(images, other_vec):
+    tmp_images = images - other_vec
+    dsts = np.linalg.norm(tmp_images, axis=1)
+    assert len(dsts) == images.shape[0]
+    return dsts
+
+
+def find_near_self_duplicates(images, ind, low_threshold, high_threshold):
+    dsts = compute_l2_distances(images, images[ind,:])
+    n = len(dsts)
+    result = []
+    for ii in range(n):
+        if ii != ind and low_threshold <= dsts[ii] and dsts[ii]<= high_threshold:
+            result.append((ii, dsts[ii]))
+    return result
