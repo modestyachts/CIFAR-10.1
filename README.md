@@ -55,6 +55,7 @@ We have automated these two steps via two scripts in the `code` directory:
 
 We recommend running these scripts on a machine with at least 1 TB of RAM, e.g., an `x1.16xlarge` instance on AWS.
 After downloading the TinyImage dataset, running the scripts will take about 30h.
+
 The scripts will produce the following data files, all of which are stored in the `other_data` folder:
 
 * `cifar10_keywords.json`
