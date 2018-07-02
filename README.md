@@ -56,13 +56,24 @@ We have automated these two steps via two scripts in the `code` directory:
 We recommend running these scripts on a machine with at least 1 TB of RAM, e.g., an `x1.16xlarge` instance on AWS.
 After downloading the TinyImage dataset, running the scripts will take about 30h.
 
-4. **Keyword counts for the new dataset.**  
-* `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+## 2. Collecting Candidate Images
 
-5. **Labeling new images.**
+After downloading the relevant subset of TinyImages (keywords and image data) to a local machine, we can now assemble a set of candidate images for the new dataset.
+We proceed in two steps:
 
-6. **Double checking labeled images.** 
-* `labeling_ui_subselect.ipynb` allows a second person to confirm the initial labelings and subselect a pool of labeled TinyImage indices.
+### 2.1 Keyword counts for the new dataset
+
+The notebook `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+
+### 2.2 Labeling new images
+
+Once we know the number of new images we require for each keyword, we can collect corresponding images from TinyImages.
+We used two notebooks for this process:
+
+* The first labeler (or set of labelers) use `labeling_ui.ipynb` in order to collect a set of candidate images.
+* The second labeler (or set of labelers) verify this selection via the `labeling_ui_subselect.ipynb` notebook.
+
+## 3. Assembling a New Dataset
 
 7. **Sampling new images from the pool of labeled images.** 
 * `sample_subselected_indices_v4.ipynb` samples the pool of labeled images and creates the new dataset for v4
@@ -71,8 +82,9 @@ After downloading the TinyImage dataset, running the scripts will take about 30h
 8. **Inspect the new dataset.**
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
 
-9. **Inspect model predictions.**
-* `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
+## Extra step: Inspecting Model Predictions
+After assembling a final dataset, we ran a broad range of classifiers on the new test set.
+The notebook `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
 
 
 # Other Data
