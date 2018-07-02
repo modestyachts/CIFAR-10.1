@@ -6,7 +6,7 @@ The data collection for CIFAR-10.1 was designed to minimize distribution shift r
 We describe the creation of CIFAR-10.1 in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
 The images in CIFAR-10.1 are a subset of the [TinyImages dataset](http://horatio.cs.nyu.edu/mit/tiny/data/index.html). 
 
-# The Dataset
+# Using the Dataset
 
 ## Dataset Releases
 
@@ -56,35 +56,49 @@ We have automated these two steps via two scripts in the `code` directory:
 We recommend running these scripts on a machine with at least 1 TB of RAM, e.g., an `x1.16xlarge` instance on AWS.
 After downloading the TinyImage dataset, running the scripts will take about 30h.
 
-4. **Keyword counts for the new dataset.**  
-* `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+## 2. Collecting Candidate Images
 
-5. **Labeling new images.**
+After downloading the relevant subset of TinyImages (keywords and image data) to a local machine, we can now assemble a set of candidate images for the new dataset.
+We proceed in two steps:
 
-6. **Double checking labeled images.** 
-* `labeling_ui_subselect.ipynb` allows a second person to confirm the initial labelings and subselect a pool of labeled TinyImage indices.
+### 2.1 Keyword counts for the new dataset
 
-7. **Sampling new images from the pool of labeled images.** 
+The notebook `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
+
+### 2.2 Labeling new images
+
+Once we know the number of new images we require for each keyword, we can collect corresponding images from TinyImages.
+We used two notebooks for this process:
+
+* The first labeler (or set of labelers) use `labeling_ui.ipynb` in order to collect a set of candidate images.
+* The second labeler (or set of labelers) verify this selection via the `labeling_ui_subselect.ipynb` notebook.
+
+## 3. Assembling a New Dataset
+
+Given a pool of new candidate images, we can now sample a new dataset from this pool.
+We have the following notebooks for this step:
+
 * `sample_subselected_indices_v4.ipynb` samples the pool of labeled images and creates the new dataset for v4
 * `sample_subselected_indices.ipynb` samples the pool of labeled images and creates the new dataset for v6 or v7
 
-8. **Inspect the new dataset.**
-* `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
+After sampling a new dataset, it is necessary to run some final checks via the `check_dataset_ui.ipynb` notebook.
+In particular, this notebook checks for near-duplicates both within the new test set and in CIFAR-10 (a new test set would not be interesting if it contains many near-duplicates of the original test set).
+In our experience, the process involves a few round-trips of sampling a new test set, checking for near-duplicates, and adding the near-duplicates to the blacklist.
+Sometimes it is necessary to collect a few additional images for keywords with many near-duplicates (using the notebooks from Step 2 above).
 
-9. **Inspect model predictions.**
-* `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
+In order to avoid re-computing L2 distances to CIFAR-10, the notebook `compute_distances_to_cifar10.ipynb` computes all top-10 nearest neighbors between our TinyImages subset and CIFAR-10.
+Running this notebook takes only a few minutes when executed on 100 `m5.4xlarge` instances via [PyWren](http://pywren.io/).
+
+## 4. Inspecting Model Predictions (Extra Step)
+After assembling a final dataset, we ran a broad range of classifiers on the new test set via our CIFAR-10 model test bed.
+The notebook `inspect_model_predictions.ipynb` explores the resulting predictions and displays a [Pandas](https://pandas.pydata.org/) dataframe including the original and new accuracy for each model. 
 
 
-# Other Data
+## Intermediate Data Files
 
-Metadata needed to create the new datasets can be downloaded from an s3 bucket using the `other_data/download.py` script.
+In order to run only individual steps of the process outlined above, we provide all intermediate data files.
+They are stored in the S3 bucket `cifar-10-1` and can be downloaded with the script `other_data/download.py`.
 The script requires Boto 3, which can be installed via pip: `pip install boto3`.
-
-The following metadata files are used in the creation of the new datasets:
-
-*  `cifar10_keywords_unique_v{}.json` contains the TinyImage index, asociated keyword, and CIFAR-10 label for every image in CIFAR-10.
-*  `keyword_counts_v{}.json` contains the image counts for each keyword.
-
 
 # License
 
