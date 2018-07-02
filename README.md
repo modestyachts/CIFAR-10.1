@@ -6,7 +6,7 @@ The data collection for CIFAR-10.1 was designed to minimize distribution shift r
 We describe the creation of CIFAR-10.1 in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
 The images in CIFAR-10.1 are a subset of the [TinyImages dataset](http://horatio.cs.nyu.edu/mit/tiny/data/index.html). 
 
-# The Dataset
+# Using the Dataset
 
 ## Dataset Releases
 
