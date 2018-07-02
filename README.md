@@ -6,17 +6,23 @@ The data collection for CIFAR-10.1 was designed to minimize distribution shift r
 We describe the creation of CIFAR-10.1 in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
 The images in CIFAR-10.1 are a subset of the [TinyImages dataset](http://horatio.cs.nyu.edu/mit/tiny/data/index.html). 
 
-# Dataset Releases
+# The Dataset
+
+## Dataset Releases
 
 There are currently two versions of the CIFAR-10.1 dataset:
 
-- `v4` is the first version of our dataset on which we tested any classifier (hence the `v4` dataset is independent of the classifiers we evaluate). The numbers reported in the main section of our paper use the `v4` dataset. The `v4` dataset was built from the top 25 TinyImage keywords for each class, which led to a slight class imbalance (the largest difference is that ships make up only 8% of the test set instead of 10%). `v4` contains 2,021 images.
+- `v4` is the first version of our dataset on which we tested any classifier. As mentioned above, this makes the `v4` dataset independent of the classifiers we evaluate. The numbers reported in the main sections of our paper use this version of the dataset. It was built from the top 25 TinyImage keywords for each class, which led to a slight class imbalance. The largest difference is that ships make up only 8% of the test set instead of 10%. `v4` contains 2,021 images.
 
 - `v6` is derived from a slightly improved keyword allocation that is exactly class balanced. This version of the dataset corresponds to the results in Appendix D of our paper. `v6` contains 2,000 images.
 
 The overlap between `v4` and `v6` is more than 90% of the respective datasets.
 Moreover, the classification accuracies are very close (see Appendix D of our paper).
 For future experiments, we recommend the `v6` version of our dataset.
+
+Missing version numbers correspond to internal releases during our quality control process (e.g., near-duplicate removal) or potential variants of our dataset we did not pursue further.
+
+## Loading the datasets
 
 The `datasets` directory contains the dataset files:
 - The `v4` files are `cifar10.1_v4_data.npy` and `cifar10.1_v4_labels.npy`.
