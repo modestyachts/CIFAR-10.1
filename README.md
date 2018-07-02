@@ -24,7 +24,7 @@ Missing version numbers correspond to internal releases during our quality contr
 
 ## Loading the datasets
 
-The `datasets` directory contains the dataset files:
+The `datasets` directory contains the dataset files in the [NumPy](http://www.numpy.org/) binary format:
 - The `v4` files are `cifar10.1_v4_data.npy` and `cifar10.1_v4_labels.npy`.
 - The `v6` files are `cifar10.1_v6_data.npy` and `cifar10.1_v6_labels.npy`.
 
