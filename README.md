@@ -40,17 +40,19 @@ The dataset creation process has several stages outlined below.
 We describe the process here at a high level.
 If you have questions about any individual steps, please do not hesitate to contact Rebecca Roelofs (roelofs@cs.berkeley.edu) and Ludwig Schmidt (ludwigschmidt2@gmail.com).
 
-1. **Extracting Data from TinyImages**
+## 1. Extracting Data from TinyImages
 
 Since the TinyImages dataset is quite large (around 280 GB), we first extract the relevant data for further processing.
 In particular, we require the following information:
+
 * The TinyImages keyword for each image in CIFAR-10.
 * All images in TinyImages belonging to these keywords.
 
-We have automated these two steps via the scripts
+We have automated these two steps via two scripts in the `code` directory:
+
 * `find_all_cifar10_keywords.sh`
 * `build_tinyimage_subset.sh`
-in the `code` directory.
+
 We recommend running these scripts on a machine with at least 1 TB of RAM, e.g., an `x1.16xlarge` instance on AWS.
 After downloading the TinyImage dataset, running the scripts will take about 30h.
 
