@@ -93,7 +93,7 @@ Running this notebook takes only a few minutes when executed on 100 `m5.4xlarge`
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
 
 ## 4. Inspecting Model Predictions (Extra Step)
-After assembling a final dataset, we ran a broad range of classifiers on the new test set.
+After assembling a final dataset, we ran a broad range of classifiers on the new test set via our CIFAR-10 model test bed.
 The notebook `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
 
 
