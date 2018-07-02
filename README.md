@@ -89,9 +89,6 @@ Sometimes it is necessary to collect a few additional images for keywords with m
 In order to avoid re-computing L2 distances to CIFAR-10, the notebook `compute_distances_to_cifar10.ipynb` computes all top-10 nearest neighbors between our TinyImages subset and CIFAR-10.
 Running this notebook takes only a few minutes when executed on 100 `m5.4xlarge` instances via [PyWren](http://pywren.io/).
 
-8. **Inspect the new dataset.**
-* `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
-
 ## 4. Inspecting Model Predictions (Extra Step)
 After assembling a final dataset, we ran a broad range of classifiers on the new test set via our CIFAR-10 model test bed.
 The notebook `inspect_model_predictions.ipynb` explores the resulting predictions and displays a [Pandas](https://pandas.pydata.org/) dataframe including the original and new accuracy for each model. 
@@ -99,14 +96,9 @@ The notebook `inspect_model_predictions.ipynb` explores the resulting prediction
 
 ## Intermediate Data Files
 
-Metadata needed to create the new datasets can be downloaded from an s3 bucket using the `other_data/download.py` script.
+In order to run only individual steps of the process outlined above, we provide all intermediate data files.
+They are stored in the S3 bucket `cifar-10-1` and can be downloaded with the script `other_data/download.py`.
 The script requires Boto 3, which can be installed via pip: `pip install boto3`.
-
-The following metadata files are used in the creation of the new datasets:
-
-*  `cifar10_keywords_unique_v{}.json` contains the TinyImage index, asociated keyword, and CIFAR-10 label for every image in CIFAR-10.
-*  `keyword_counts_v{}.json` contains the image counts for each keyword.
-
 
 # License
 
