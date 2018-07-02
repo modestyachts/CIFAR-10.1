@@ -1,7 +1,9 @@
 # CIFAR-10.1
-This repository contains the CIFAR-10.1 dataset, a new test set for CIFAR-10.
-We describe the creation of the dataset in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
-These images are a subset of the [TinyImages](http://horatio.cs.nyu.edu/mit/tiny/data/index.html) dataset. 
+This repository contains the CIFAR-10.1 dataset, which is a new test set for [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html).
+CIFAR-10.1 contains roughly 2,000 new test images that were sampled *after* multiple years of research on the CIFAR-10 dataset.
+The data collection for CIFAR-10.1 was designed so that the distribution shift relative to the original CIFAR-10 dataset is minimize.  
+We describe the creation of CIFAR-10.1 in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
+The images in CIFAR-10.1 are a subset of the [TinyImages dataset](http://horatio.cs.nyu.edu/mit/tiny/data/index.html). 
 
 # Dataset Release
 
@@ -66,9 +68,9 @@ The `LICENSE` file does *not* apply to the actual image and label data in the `d
 This image data is part of the Tiny Images dataset and can be used the same way as the Tiny Images dataset.
 
 
-# Citing the Dataset
+# Citing CIFAR-10.1
 
-To cite this dataset please use both references:
+To cite the CIFAR-10.1 dataset, please use both of the following references:
 ```
 @article{recht2018cifar10.1,
   author = {Benjamin Recht and Rebecca Roelofs and Ludwig Schmidt and Vaishaal Shankar},
@@ -76,6 +78,7 @@ To cite this dataset please use both references:
   year = {2018},
   note = {\url{https://arxiv.org/abs/1806.00451}},
 }
+
 @article{torralba2008tinyimages, 
   author = {Antonio Torralba and Rob Fergus and William T. Freeman}, 
   journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence}, 
