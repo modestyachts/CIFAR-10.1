@@ -1,5 +1,6 @@
 # CIFAR-10.1
 This repository contains the CIFAR-10.1 dataset, which is a new test set for [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html).
+
 CIFAR-10.1 contains roughly 2,000 new test images that were sampled *after* multiple years of research on the CIFAR-10 dataset.
 The data collection for CIFAR-10.1 was designed so that the distribution shift relative to the original CIFAR-10 dataset is minimize.  
 We describe the creation of CIFAR-10.1 in the paper ["Do CIFAR-10 Classifiers Generalize to CIFAR-10?"](https://arxiv.org/abs/1806.00451). 
