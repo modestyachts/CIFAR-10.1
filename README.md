@@ -75,19 +75,29 @@ We used two notebooks for this process:
 
 ## 3. Assembling a New Dataset
 
-7. **Sampling new images from the pool of labeled images.** 
+Given a pool of new candidate images, we can now sample a new dataset from this pool.
+We have the following notebooks for this step:
+
 * `sample_subselected_indices_v4.ipynb` samples the pool of labeled images and creates the new dataset for v4
 * `sample_subselected_indices.ipynb` samples the pool of labeled images and creates the new dataset for v6 or v7
+
+After sampling a new dataset, it is necessary to run some final checks via the `check_dataset_ui.ipynb` notebook.
+In particular, this notebook checks for near-duplicates both within the new test set and in CIFAR-10 (a new test set would not be interesting if it contains many near-duplicates of the original test set).
+In our experience, the process involves a few round-trips of sampling a new test set, checking for near-duplicates, and adding the near-duplicates to the blacklist.
+Sometimes it is necessary to collect a few additional images for keywords with many near-duplicates (using the notebooks from Step 2 above).
+
+In order to avoid re-computing L2 distances to CIFAR-10, the notebook `compute_distances_to_cifar10.ipynb` computes all top-10 nearest neighbors between our TinyImages subset and CIFAR-10.
+Running this notebook takes only a few minutes when executed on 100 `m5.4xlarge` instances via [PyWren](http://pywren.io/).
 
 8. **Inspect the new dataset.**
 * `inspect_dataset_simple.ipynb` is a simple notebook to browse the new dataset. 
 
-## Extra step: Inspecting Model Predictions
+## 4. Inspecting Model Predictions (Extra Step)
 After assembling a final dataset, we ran a broad range of classifiers on the new test set.
 The notebook `inspect_model_predictions.ipynb` explores the model predictions made on the new test set and displays a dataframe including the original and new accuracy for each model. 
 
 
-# Other Data
+## Intermediate Data Files
 
 Metadata needed to create the new datasets can be downloaded from an s3 bucket using the `other_data/download.py` script.
 The script requires Boto 3, which can be installed via pip: `pip install boto3`.
