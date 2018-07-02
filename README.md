@@ -22,7 +22,7 @@ For future experiments, we recommend the `v6` version of our dataset.
 
 Missing version numbers correspond to internal releases during our quality control process (e.g., near-duplicate removal) or potential variants of our dataset we did not pursue further.
 
-## Loading the datasets
+## Loading the Dataset
 
 The `datasets` directory contains the dataset files in the [NumPy](http://www.numpy.org/) binary format:
 - The `v4` files are `cifar10.1_v4_data.npy` and `cifar10.1_v4_labels.npy`.
@@ -35,13 +35,24 @@ The notebook uses a utility function to load the dataset from `utils.py` in the 
 
 WARNING: This is currently work in progress, some parts may be incomplete.
 
+This repository contains code to replicate the creation process of CIFAR-10.1. 
+The dataset creation process has several stages outlined below.
+We describe the process here at a high level.
+If you have questions about any individual steps, please do not hesitate to contact Rebecca Roelofs (roelofs@cs.berkeley.edu) and Ludwig Schmidt (ludwigschmidt2@gmail.com).
 
-We include code to make it possible for others to replicate the creation of the new dataset. 
-The dataset creation process has several stages:
+1. **Extracting Data from TinyImages**
 
-1. **TinyImages**
-2. **Keywords for CIFAR-10**
-3. **Unique Keywords**
+Since the TinyImages dataset is quite large (around 280 GB), we first extract the relevant data for further processing.
+In particular, we require the following information:
+* The TinyImages keyword for each image in CIFAR-10.
+* All images in TinyImages belonging to these keywords.
+
+We have automated these two steps via the scripts
+* `find_all_cifar10_keywords.sh`
+* `build_tinyimage_subset.sh`
+in the `code` directory.
+We recommend running these scripts on a machine with at least 1 TB of RAM, e.g., an `x1.16xlarge` instance on AWS.
+After downloading the TinyImage dataset, running the scripts will take about 30h.
 
 4. **Keyword counts for the new dataset.**  
 * `generate_keyword_counts.ipynb` decides which keywords we want to include in the new dataset and determines the number of images we require for each of these keywords. 
