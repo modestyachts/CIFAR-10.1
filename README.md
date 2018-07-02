@@ -66,7 +66,7 @@ The following metadata files are used in the creation of the new datasets:
 
 Unless noted otherwise in individual files, the code in this repository is released under the MIT license (see the `LICENSE` file).
 The `LICENSE` file does *not* apply to the actual image and label data in the `datasets` folder.
-This image data is part of the Tiny Images dataset and can be used the same way as the Tiny Images dataset.
+The image data is part of the Tiny Images dataset and can be used the same way as the Tiny Images dataset.
 
 
 # Citing CIFAR-10.1
